@@ -1,10 +1,8 @@
 const topics = ["Internet Cats", "Meme's", "Typing", "Space", "Rick and Morty"];
-const url = "https://api.giphy.com/v1/gifs/search?q=funny+cat&api_key=aFFKTuSMjd6j0wwjpFCPXZipQbcnw3vB";
 
 class config {
     constructor() {
        this.topics = topics;
-       this.url = url;
     }
 }
 
@@ -16,20 +14,18 @@ class catalog extends config {
             document.querySelector('.buttons').appendChild(btn);
         })
     }
-
-    input() {
+    
+    input(newURL) {
         async function showInput() {
             try {
-                console.log('data is requested...')
-                const response = await fetch(url, {
-                    dataType: 'json',
-                    contentType: 'text/html' 
-                });
+                const response = await fetch(newURL);
                 const data = await response.json();
-                console.log(data.data);
                 data.data.forEach(item => {
                     const gif = document.createElement('img');
-                    gif.setAttribute('src', item.type);
+                    let gifURL = item.images.original.url;
+                    gif.setAttribute('src', gifURL);
+                    gif.setAttribute('width', '200px');
+                    gif.setAttribute('height', '150px');
                     document.querySelector('.containerContent').appendChild(gif);
                 })  
             } catch (err) {
@@ -38,8 +34,23 @@ class catalog extends config {
         }
         showInput();
     }
+
+    removeText() {
+        const remove = document.querySelectorAll('img');
+        Array.prototype.forEach.call(remove, function(node) {
+            node.parentNode.removeChild(node);
+        });
+    }
 }
 
 const ctg = new catalog();
+
 ctg.renderButtons();
-ctg.input();
+
+document.getElementById('submit').addEventListener('click', (event) => {
+    event.preventDefault();
+    const inputValue = document.getElementById('input').value;
+    let url = `https://api.giphy.com/v1/gifs/search?q=${inputValue}&api_key=aFFKTuSMjd6j0wwjpFCPXZipQbcnw3vB`;
+    ctg.removeText();
+    ctg.input(url);
+})
