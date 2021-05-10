@@ -1,5 +1,5 @@
 const topics = ["Internet Cats", "Meme's", "Typing", "Space", "Rick and Morty"];
-const url = "https://api.giphy.com/v1/gifs/search?&api_key=aFFKTuSMjd6j0wwjpFCPXZipQbcnw3vB";
+const url = "https://api.giphy.com/v1/gifs/search?q=funny+cat&api_key=aFFKTuSMjd6j0wwjpFCPXZipQbcnw3vB";
 
 class config {
     constructor() {
@@ -9,7 +9,7 @@ class config {
 }
 
 class catalog extends config {
-    render() {
+    renderButtons() {
         this.topics.forEach(item => {
             const btn = document.createElement('button');
             btn.innerHTML = item;
@@ -18,16 +18,28 @@ class catalog extends config {
     }
 
     input() {
-        function showInput() {
-            console.log('dariduridarale...')
-            const response = fetch(url);
-            const data = response.json();
-            console.log('data', data);
+        async function showInput() {
+            try {
+                console.log('data is requested...')
+                const response = await fetch(url, {
+                    dataType: 'json',
+                    contentType: 'text/html' 
+                });
+                const data = await response.json();
+                console.log(data.data);
+                data.data.forEach(item => {
+                    const gif = document.createElement('img');
+                    gif.setAttribute('src', item.type);
+                    document.querySelector('.containerContent').appendChild(gif);
+                })  
+            } catch (err) {
+                console.log(err);
+            }
         }
         showInput();
     }
 }
 
 const ctg = new catalog();
-ctg.render();
+ctg.renderButtons();
 ctg.input();
