@@ -1,0 +1,12 @@
+@media screen and (max-width: 450px){
+    .buttons {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    .search-bar {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+    }
+}
