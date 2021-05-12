@@ -84,18 +84,18 @@ class catalog extends config {
             this.removeGifs();
         })
     }
+    // input - ში ჩაწერისას და submit ბათონის დაჭერისას გიფები რო ამოაგდოს
+    inputTextBox() {
+        document.getElementById('submit').addEventListener('click', (event) => {
+            event.preventDefault();
+            const inputValue = document.getElementById('input').value;  
+            let url = `${ctg.url}search?q=${inputValue}&limit=12&${ctg.apiKey}`;
+            this.removeGifs();
+            this.fetch(url);
+            this.addInput(inputValue);
+        })
+    }
 }
-
-// input - ში ჩაწერისას და submit ბათონის დაჭერისას გიფები რო ამოაგდოს
-document.getElementById('submit').addEventListener('click', (event) => {
-    event.preventDefault();
-    const inputValue = document.getElementById('input').value;  
-    let url = `${ctg.url}search?q=${inputValue}&limit=12&${ctg.apiKey}`;
-    ctg.removeGifs();
-    ctg.fetch(url);
-    ctg.addInput(inputValue);
-})
-
 
 const ctg = new catalog();
 
@@ -104,3 +104,5 @@ ctg.renderButtons();
 ctg.tabURL();
 
 ctg.seeWhatsTrending();
+
+ctg.inputTextBox();
